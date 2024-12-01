@@ -1,5 +1,6 @@
 ﻿using Core.DTOs;
 using Core.Interfaces.Service;
+using Core.Request;
 using FluentValidation;
 using Infrastructure.Validations;
 using Microsoft.AspNetCore.Mvc;
@@ -9,17 +10,17 @@ namespace Shop.Server.Controllers;
 public class ProductController : BaseApiController
 {
     private readonly IProductService _productService;
-    private readonly IValidator<CreateProductDTO> _productValidation;
+    private readonly IValidator<CreateProductRequest> _createProductValidation;
     private readonly IValidator<UpdateProductDTO> _updateProductValidation;
 
     public ProductController(
         IProductService productService,
-        IValidator<CreateProductDTO> productValidation,
+        IValidator<CreateProductRequest> createProductValidation,
         IValidator<UpdateProductDTO> updateProductValidation
         )
     {
         _productService = productService;
-        _productValidation = productValidation;
+        _createProductValidation = createProductValidation;
         _updateProductValidation = updateProductValidation;
     }
 
@@ -36,9 +37,9 @@ public class ProductController : BaseApiController
     }
 
     [HttpPost("create-product")]
-    public async Task<IActionResult> CreateProduct([FromBody] CreateProductDTO createProductDTO)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest)
     {
-        var result = await _productValidation.ValidateAsync(createProductDTO);
+        var result = await _createProductValidation.ValidateAsync(createProductRequest);
         if (!result.IsValid)
             return BadRequest(result.Errors.Select(e => new
             {
@@ -46,7 +47,7 @@ public class ProductController : BaseApiController
                 e.ErrorMessage
             }));
 
-        return Ok(await _productService.CreateProduct(createProductDTO));
+        return Ok(await _productService.CreateProduct(createProductRequest));
     }
 
     [HttpPut("update-product/{id}")]

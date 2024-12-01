@@ -15,5 +15,13 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         entity.Property(x => x.Price)
             .IsRequired();
+
+        entity.HasOne(x => x.Category)
+              .WithMany(x => x.Products)
+              .HasForeignKey(x => x.CategoryId);
+
+        entity.HasOne(x => x.OrderDetail)
+              .WithMany(x => x.Products)
+              .HasForeignKey(x => x.OrderDetailId);
     }
 }

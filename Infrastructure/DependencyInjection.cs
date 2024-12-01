@@ -1,6 +1,7 @@
 ﻿using Core.DTOs;
 using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
+using Core.Request;
 using FluentValidation;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
@@ -59,7 +60,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddValidations(this IServiceCollection services)
     {
-        services.AddScoped<IValidator<CreateProductDTO>, CreateProductValidation>();
+        services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidation>();
         services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
 
         return services;

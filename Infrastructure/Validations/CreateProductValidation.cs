@@ -1,9 +1,9 @@
-﻿using Core.DTOs;
+﻿using Core.Request;
 using FluentValidation;
 
 namespace Infrastructure.Validations;
 
-public class CreateProductValidation : AbstractValidator<CreateProductDTO>
+public class CreateProductValidation : AbstractValidator<CreateProductRequest>
 {
     public CreateProductValidation()
     {

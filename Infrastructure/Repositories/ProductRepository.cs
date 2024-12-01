@@ -1,6 +1,7 @@
 ﻿using Core.DTOs;
 using Core.Entities;
 using Core.Interfaces.Repository;
+using Core.Request;
 using Infrastructure.Context;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +17,9 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<ProductResponseDTO> CreateProduct(CreateProductDTO createProductDTO)
+    public async Task<ProductResponseDTO> CreateProduct(CreateProductRequest createProductRequest)
     {
-        var entity = createProductDTO.Adapt<Product>();
+        var entity = createProductRequest.Adapt<Product>();
 
         _context.Products.Add(entity);
         await _context.SaveChangesAsync();

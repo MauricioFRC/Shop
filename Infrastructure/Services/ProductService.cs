@@ -1,6 +1,7 @@
 ﻿using Core.DTOs;
 using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
+using Core.Request;
 using Mapster;
 
 namespace Infrastructure.Services;
@@ -14,13 +15,10 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
-    public async Task<ProductResponseDTO> CreateProduct(CreateProductDTO createProductDTO)
+    public async Task<ProductResponseDTO> CreateProduct(CreateProductRequest createProductRequest)
     {
-        var createProduct = await _productRepository.CreateProduct(createProductDTO);
-        if (createProduct == null)
-            throw new Exception("No se pudo crear el producto.");
-
-        return createProduct.Adapt<ProductResponseDTO>();
+        var createProduct = await _productRepository.CreateProduct(createProductRequest);
+        return createProduct == null ? throw new Exception("No se pudo crear el producto.") : createProduct.Adapt<ProductResponseDTO>();
     }
 
     public async Task<ProductResponseDTO> DeleteProduct(int id)
