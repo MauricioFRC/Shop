@@ -16,9 +16,47 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
+    public async Task<ProductResponseDTO> CreateProduct(CreateProductDTO createProductDTO)
+    {
+        var entity = createProductDTO.Adapt<Product>();
+
+        _context.Products.Add(entity);
+        await _context.SaveChangesAsync();
+
+        return entity.Adapt<ProductResponseDTO>();
+    }
+
+    public async Task<ProductResponseDTO> DeleteProduct(int id)
+    {
+        var deletedProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        
+        _context.Products.Remove(deletedProduct!);
+        await _context.SaveChangesAsync();
+
+        return deletedProduct.Adapt<ProductResponseDTO>();
+    }
+
     public async Task<List<ProductResponseDTO>> GetAllProducts()
     {
         var products = await _context.Products.ToListAsync();
         return products.Adapt<List<ProductResponseDTO>>();
+    }
+
+    public async Task<ProductResponseDTO> GetProductById(int id)
+    {
+        var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        return product.Adapt<ProductResponseDTO>();
+    }
+
+    public async Task<ProductResponseDTO> UpdateProduct(int id, UpdateProductDTO updateProductDTO)
+    {
+        var updateProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+
+        updateProductDTO.Adapt(updateProduct);
+        _context.Products.Update(updateProduct!);
+
+        await _context.SaveChangesAsync();
+
+        return updateProduct.Adapt<ProductResponseDTO>();
     }
 }

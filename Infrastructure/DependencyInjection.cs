@@ -1,4 +1,11 @@
-﻿using Infrastructure.Context;
+﻿using Core.DTOs;
+using Core.Interfaces.Repository;
+using Core.Interfaces.Service;
+using FluentValidation;
+using Infrastructure.Context;
+using Infrastructure.Repositories;
+using Infrastructure.Services;
+using Infrastructure.Validations;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +18,15 @@ namespace Infrastructure;
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
-        IServiceCollection services, 
+        this IServiceCollection services, 
         IConfiguration configuration
         )
     {
         services.AddDatabase(configuration);
         services.AddMapping();
+        services.AddRepositories();
+        services.AddServices();
+        services.AddValidations();
 
         return services;
     }
@@ -29,6 +39,28 @@ public static class DependencyInjection
         {
             options.UseNpgsql(connectionString);
         });
+
+        return services;
+    }
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IProductRepository, ProductRepository>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IProductService, ProductService>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddValidations(this IServiceCollection services)
+    {
+        services.AddScoped<IValidator<CreateProductDTO>, CreateProductValidation>();
+        services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
 
         return services;
     }

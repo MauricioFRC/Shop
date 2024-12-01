@@ -6,5 +6,6 @@ public class Product
     public decimal Price { get; set; }
     public string ProductName { get; set; } = string.Empty;
     public string? ProductDescription { get; set; }
+    public string Category { get; set; } = string.Empty;
     public int Stock { get; set; }
 }

@@ -1,38 +1,38 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
-interface Forecast {
-	date: string;
-	temperatureC: number;
-	temperatureF: number;
-	summary: string;
+interface Product {
+	id: number;
+	name: string;
+	description: string;
+	price: number;
 }
 
 function App() {
-	const [forecasts, setForecasts] = useState<Forecast[]>();
+	const [products, setProducts] = useState<Product[]>();
 
 	useEffect(() => {
-		populateWeatherData();
+		productsData();
 	}, []);
 
-	const contents = forecasts === undefined
-		? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
+	const contents = products === undefined
+		? <p><em>Loading...</em></p>
 		: <table className="table table-striped" aria-labelledby="tableLabel">
 			<thead>
 				<tr>
-					<th>Date</th>
-					<th>Temp. (C)</th>
-					<th>Temp. (F)</th>
-					<th>Summary</th>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Price</th>
+					<th>Description</th>
 				</tr>
 			</thead>
 			<tbody>
-				{forecasts.map(forecast =>
-					<tr key={forecast.date}>
-						<td>{forecast.date}</td>
-						<td>{forecast.temperatureC}</td>
-						<td>{forecast.temperatureF}</td>
-						<td>{forecast.summary}</td>
+				{products.map(products =>
+					<tr key={products.id}>
+						<td>{products.id}</td>
+						<td>{products.name}</td>
+						<td>{products.price}</td>
+						<td>{products.description}</td>
 					</tr>
 				)}
 			</tbody>
@@ -40,17 +40,16 @@ function App() {
 
 	return (
 		<div>
-			<h1 id="tableLabel">Weather forecast</h1>
-			<p>This component demonstrates fetching data from the server.</p>
+			<h1 id="tableLabel">Products</h1>
 			{contents}
 		</div>
 	);
 
-	async function populateWeatherData() {
-		const response = await fetch('weatherforecast');
+	async function productsData() {
+		const response = await fetch('http://localhost:5022/products');
 		if (response.ok) {
 			const data = await response.json();
-			setForecasts(data);
+			setProducts(data);
 		}
 	}
 }
