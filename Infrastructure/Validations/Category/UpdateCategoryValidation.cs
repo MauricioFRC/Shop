@@ -1,7 +1,7 @@
 ﻿using Core.DTOs.Category;
 using FluentValidation;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.Category;
 
 public class UpdateCategoryValidation : AbstractValidator<UpdateCategoryDTO>
 {

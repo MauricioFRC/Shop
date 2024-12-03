@@ -2,7 +2,7 @@
 using FluentValidation;
 using Infrastructure.Repositories;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.Product;
 
 public class CreateProductValidation : AbstractValidator<CreateProductRequest>
 {

@@ -1,7 +1,7 @@
 ﻿using Core.Request;
 using FluentValidation;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.Category;
 
 public class CreateCategoryValidation : AbstractValidator<CreateCategoryRequest>
 {

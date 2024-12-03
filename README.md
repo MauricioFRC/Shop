@@ -7,7 +7,7 @@
 git clone https://github.com/MauricioFRC/Shop.git && cd Shop
 ```
 
-### Chanage the Connection String in `appsettings.Development.json`
+#### Chanage the Connection String in `appsettings.Development.json`
 ```json
 "ConnectionStrings": {
     "Shop": "Host=localhost; Database=shop; Username=your_user; Password=your_password"
@@ -54,33 +54,114 @@ docker run -p 5022:5022 shop-app
 
 ---
 
-- **Users:** for customers and administrators.
+# Products Endpoints
+
+---
+
+
+# Categories Endpoints
+
+---
+
+# Users Endpoints
+
 `POST` `/api/create-user`
-
 ```json
 {
-    "name": "string",
-    "password": "string"
-    "role": "string"
+  "userName": "John Doe",
+  "email": "johndoe@gmail.com",
+  "password": "john123456"
 }
 ```
 
-- **Orders:** for orders.
-- **OrderDetails:** para productos en cada pedido.
-`GET` `/orders/{id}/details`
-- **Categories:** para organizar productos.
-`GET` `/categories/{id}/products`
-
-- **Payments:** para registrar transacciones.
-`POST` `/payments`
+`Response`
 ```json
 {
+  "userId": 1,
+  "userName": "John Doe",
+  "email": "johndoe@gmail.com",
+  "role": "Customer"
 }
 ```
 
-`GET` `/payments/{id}/details`
+`GET` `/search-user/{id}`
+
+`/search-user/1`
 ```json
 {
+  "userId": 1,
+  "userName": "John Doe",
+  "email": "johndoe@gmail.com",
+  "role": "Customer"
 }
 ```
+
+`GET` `/list-users`
+```json
+[
+  {
+    "userId": 1,
+    "userName": "John Doe",
+    "email": "johndoe@gmail.com",
+    "role": "Customer"
+  },
+  {
+    "userId": 2,
+    "userName": "Test",
+    "email": "test@gmail.com",
+    "role": "Customer"
+  },
+  {
+    "userId": 3,
+    "userName": "Test2",
+    "email": "test2@gmail.com",
+    "role": "Customer"
+  }
+]
+```
+
+`PUT` `/update-user/{id}`
+
+`/update-user/1`
+```json
+{
+  "userName": "John",
+  "email": "johndoe@gmail.com",
+  "password": "john123456789"
+}
+```
+
+`Response`
+```json
+{
+  "userId": 1,
+  "userName": "John",
+  "email": "johndoe@gmail.com",
+  "role": "Customer"
+}
+```
+
+`DELETE` `/delete-user/{id}`
+
+`/delete-user/1`
+```json
+{
+  "userId": 1,
+  "userName": "John Doe",
+  "email": "johndoe@gmail.com",
+  "role": "Customer"
+}
+```
+---
+
+# Orders Endpoints
+
+---
+
+# Order Details Endpoints
+
+---
+
+# Payments Endpoints
+
 ---

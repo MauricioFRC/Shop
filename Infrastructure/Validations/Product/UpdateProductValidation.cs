@@ -1,7 +1,7 @@
 ﻿using Core.DTOs.Product;
 using FluentValidation;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.Product;
 
 public class UpdateProductValidation : AbstractValidator<UpdateProductDTO>
 {

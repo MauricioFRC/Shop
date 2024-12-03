@@ -1,5 +1,6 @@
 ﻿using Core.DTOs.Category;
 using Core.DTOs.Product;
+using Core.DTOs.User;
 using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
 using Core.Request;
@@ -7,7 +8,9 @@ using FluentValidation;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
-using Infrastructure.Validations;
+using Infrastructure.Validations.Category;
+using Infrastructure.Validations.Product;
+using Infrastructure.Validations.User;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +52,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IUserRespository, UserRepository>();
 
         return services;
     }
@@ -57,16 +61,19 @@ public static class DependencyInjection
     {
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }
 
     private static IServiceCollection AddValidations(this IServiceCollection services)
     {
-        services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidation>();
-        services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
         services.AddScoped<IValidator<CreateCategoryRequest>, CreateCategoryValidation>();
+        services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidation>();
+        services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidation>();
         services.AddScoped<IValidator<UpdateCategoryDTO>, UpdateCategoryValidation>();
+        services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
+        services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidation>();
 
         return services;
     }
