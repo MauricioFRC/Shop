@@ -8,5 +8,4 @@ public class OrderDetail
 
     public int OrderId { get; set; }
     public Order Order { get; set; } = null!;
-    public List<Product> Products { get; set; } = [];
 }

@@ -19,9 +19,5 @@ public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
         entity.HasOne(od => od.Order)
               .WithMany(od => od.OrderDetails)
               .HasForeignKey(od => od.OrderId);
-
-        entity.HasMany(od => od.Products)
-              .WithOne(od => od.OrderDetail)
-              .HasForeignKey(od => od.OrderDetailId);
     }
 }

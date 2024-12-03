@@ -10,6 +10,4 @@ public class Product
 
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
-    public int OrderDetailId { get; set; }
-    public OrderDetail OrderDetail { get; set; } = null!;
 }

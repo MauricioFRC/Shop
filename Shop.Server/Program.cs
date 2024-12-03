@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(builder =>
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+// app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 

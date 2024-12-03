@@ -1,4 +1,5 @@
-﻿using Core.DTOs;
+﻿using Core.DTOs.Product;
+using Core.Entities;
 using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
 using Core.Request;
@@ -15,10 +16,16 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
-    public async Task<ProductResponseDTO> CreateProduct(CreateProductRequest createProductRequest)
+    public async Task<ProductResponseDTO> CreateProduct(CreateProductRequest createProductRequest, string categoryName)
     {
-        var createProduct = await _productRepository.CreateProduct(createProductRequest);
-        return createProduct == null ? throw new Exception("No se pudo crear el producto.") : createProduct.Adapt<ProductResponseDTO>();
+        var category = await _productRepository.GetCategories(categoryName) ?? throw new Exception("No se encontró la categoría");
+
+        var product = category.Adapt<Product>();
+        createProductRequest.CategoryId = category.Id;
+
+        await _productRepository.CreateProduct(createProductRequest);
+
+        return category == null ? throw new Exception("No se pudo crear el producto.") : product.Adapt<ProductResponseDTO>();
     }
 
     public async Task<ProductResponseDTO> DeleteProduct(int id)

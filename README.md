@@ -26,7 +26,27 @@ cd ./Shop.Server && dotnet build -c Release
 
 ## Compilation with Docker
 ```sh
-docker build --rm -t productive-dev/Shop:latest .
+docker build -t shop-app .
+```
+
+```dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+WORKDIR /src
+
+COPY ["Shop.Server/Shop.Server.csproj", "Shop.Server/"]
+COPY ["shop.client/package.json", "shop.client/"]
+
+RUN dotnet restore "Shop.Server/Shop.Server.csproj"
+
+RUN apt-get update && apt-get install -y nodejs npm
+
+COPY . .
+...
+```
+
+```sh
+docker run -p 5022:5022 shop-app
 ```
 
 ### Entity Relationship Diagram

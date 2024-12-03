@@ -1,4 +1,4 @@
-﻿using Core.DTOs;
+﻿using Core.DTOs.Product;
 using Core.Entities;
 using Core.Interfaces.Repository;
 using Core.Request;
@@ -17,10 +17,18 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
+    public async Task<Category> GetCategories(string categoryName)
+    {
+        var searchCategory = await _context.Categories
+            .FirstOrDefaultAsync(x => x.Name == categoryName);
+
+        return searchCategory!;
+    }
+
     public async Task<ProductResponseDTO> CreateProduct(CreateProductRequest createProductRequest)
     {
         var entity = createProductRequest.Adapt<Product>();
-
+        
         _context.Products.Add(entity);
         await _context.SaveChangesAsync();
 
@@ -60,4 +68,5 @@ public class ProductRepository : IProductRepository
 
         return updateProduct.Adapt<ProductResponseDTO>();
     }
+
 }

@@ -10,8 +10,8 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         entity.HasKey(c => c.Id);
 
-        entity.Property(c => c.Name)
-            .IsRequired();
+        entity.HasIndex(c => c.Name)
+              .IsUnique();
 
         entity.HasMany(c => c.Products)
               .WithOne(c => c.Category)

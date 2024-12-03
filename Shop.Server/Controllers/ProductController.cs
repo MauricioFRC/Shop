@@ -1,4 +1,4 @@
-﻿using Core.DTOs;
+﻿using Core.DTOs.Product;
 using Core.Interfaces.Service;
 using Core.Request;
 using FluentValidation;
@@ -37,7 +37,7 @@ public class ProductController : BaseApiController
     }
 
     [HttpPost("create-product")]
-    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest, [FromRoute] string categories)
     {
         var result = await _createProductValidation.ValidateAsync(createProductRequest);
         if (!result.IsValid)
@@ -47,7 +47,7 @@ public class ProductController : BaseApiController
                 e.ErrorMessage
             }));
 
-        return Ok(await _productService.CreateProduct(createProductRequest));
+        return Ok(await _productService.CreateProduct(createProductRequest, categories));
     }
 
     [HttpPut("update-product/{id}")]

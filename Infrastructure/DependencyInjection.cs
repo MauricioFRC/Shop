@@ -1,4 +1,5 @@
-﻿using Core.DTOs;
+﻿using Core.DTOs.Category;
+using Core.DTOs.Product;
 using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
 using Core.Request;
@@ -47,6 +48,7 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         return services;
     }
@@ -54,6 +56,7 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
         return services;
     }
@@ -62,6 +65,8 @@ public static class DependencyInjection
     {
         services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidation>();
         services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
+        services.AddScoped<IValidator<CreateCategoryRequest>, CreateCategoryValidation>();
+        services.AddScoped<IValidator<UpdateCategoryDTO>, UpdateCategoryValidation>();
 
         return services;
     }

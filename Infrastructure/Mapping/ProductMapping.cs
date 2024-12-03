@@ -1,4 +1,4 @@
-﻿using Core.DTOs;
+﻿using Core.DTOs.Product;
 using Core.Entities;
 using Core.Request;
 using Mapster;
@@ -14,14 +14,14 @@ public class ProductMapping : IRegister
             .Map(dest => dest.Name, src => src.ProductName)
             .Map(dest => dest.Price, src => src.Price)
             .Map(dest => dest.Description, src => src.ProductDescription)
-            .Map(dest => dest.Stock, src => src.Stock);
+            .Map(dest => dest.Stock, src => src.Stock)
+            .Map(dest => dest.Category, src => src.Category.Name);
 
         config.NewConfig<CreateProductRequest, Product>()
             .Map(dest => dest.Price, src => src.Price)
             .Map(dest => dest.ProductName, src => src.Name)
             .Map(dest => dest.ProductDescription, src => src.Description)
-            .Map(dest => dest.Stock, src => src.Stock)
-            .Map(dest => dest.Category, src => src.Category ?? "Has No Category");
+            .Map(dest => dest.Stock, src => src.Stock);
 
         config.NewConfig<UpdateProductDTO, Product>()
             .Map(dest => dest.Price, src => src.Price)

@@ -19,9 +19,5 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         entity.HasOne(x => x.Category)
               .WithMany(x => x.Products)
               .HasForeignKey(x => x.CategoryId);
-
-        entity.HasOne(x => x.OrderDetail)
-              .WithMany(x => x.Products)
-              .HasForeignKey(x => x.OrderDetailId);
     }
 }

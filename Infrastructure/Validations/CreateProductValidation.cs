@@ -1,5 +1,6 @@
 ﻿using Core.Request;
 using FluentValidation;
+using Infrastructure.Repositories;
 
 namespace Infrastructure.Validations;
 
@@ -11,10 +12,7 @@ public class CreateProductValidation : AbstractValidator<CreateProductRequest>
             .NotEmpty().NotNull();
 
         RuleFor(x => x.Description)
-            .NotEmpty().NotNull().MaximumLength(120);
-
-        RuleFor(x => x.Category)
-            .MaximumLength(40);
+            .NotEmpty().NotNull().MaximumLength(2048);
 
         RuleFor(x => x.Price)
             .GreaterThan(0);
