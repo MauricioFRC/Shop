@@ -8,7 +8,7 @@ public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
 {
     public void Configure(EntityTypeBuilder<OrderDetail> entity)
     {
-        entity.HasKey(od => od.OrderId);
+        entity.HasKey(od => od.Id);
 
         entity.Property(od => od.Quantity)
               .IsRequired();

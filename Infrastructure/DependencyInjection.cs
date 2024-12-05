@@ -1,5 +1,6 @@
 ﻿using Core.DTOs.Category;
 using Core.DTOs.Order;
+using Core.DTOs.OrderDetail;
 using Core.DTOs.Product;
 using Core.DTOs.User;
 using Core.Interfaces.Repository;
@@ -11,6 +12,7 @@ using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Infrastructure.Validations.Category;
 using Infrastructure.Validations.Order;
+using Infrastructure.Validations.OrderDetail;
 using Infrastructure.Validations.Product;
 using Infrastructure.Validations.User;
 using Mapster;
@@ -53,6 +55,7 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRespository, UserRepository>();
@@ -63,6 +66,7 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IOrderDetailService, OrderDetailService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
@@ -73,10 +77,12 @@ public static class DependencyInjection
     private static IServiceCollection AddValidations(this IServiceCollection services)
     {
         services.AddScoped<IValidator<CreateCategoryRequest>, CreateCategoryValidation>();
+        services.AddScoped<IValidator<CreateOrderDetailRequest>, CreateOrderDetailValidation>();
         services.AddScoped<IValidator<CreateOrderRequest>, CreateOrderValidation>();
         services.AddScoped<IValidator<CreateProductRequest>, CreateProductValidation>();
         services.AddScoped<IValidator<CreateUserRequest>, CreateUserValidation>();
         services.AddScoped<IValidator<UpdateCategoryDTO>, UpdateCategoryValidation>();
+        services.AddScoped<IValidator<UpdateOrderDetailDTO>, UpdateOrderDetailValidation>();
         services.AddScoped<IValidator<UpdateOrderDTO>, UpdateOrderValidation>();
         services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
         services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidation>();
