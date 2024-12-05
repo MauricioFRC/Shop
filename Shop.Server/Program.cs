@@ -25,7 +25,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(builder =>
-    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    builder.WithOrigins("https://localhost:56480")
+           .AllowAnyMethod()
+           .AllowAnyHeader());
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 

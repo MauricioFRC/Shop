@@ -54,8 +54,8 @@ public class UserRepository : IUserRespository
         var searchUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
         userUpdateDTO.Adapt(searchUser);
+
         _context.Users.Update(searchUser);
-        
         await _context.SaveChangesAsync();
 
         return searchUser.Adapt<UserResponseDTO>();
