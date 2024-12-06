@@ -27,9 +27,17 @@ public class OrderDetailRepository : IOrderDetailRepository
         return createOrderDetail.Adapt<OrderDetailResponseDTO>();
     }
 
-    public Task<OrderDetailResponseDTO> DeleteOrderDetail(int id)
+    public async Task<OrderDetailResponseDTO> DeleteOrderDetail(int id)
     {
-        throw new NotImplementedException();
+        var deleteOrder = await _context.OrderDetails
+            .Include(x => x.Order)
+                .ThenInclude(x => x.User)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        _context.OrderDetails.Remove(deleteOrder!);
+        await _context.SaveChangesAsync();
+
+        return deleteOrder.Adapt<OrderDetailResponseDTO>();
     }
 
     public async Task<List<OrderDetailResponseDTO>> ListOrderDetails()
@@ -53,8 +61,18 @@ public class OrderDetailRepository : IOrderDetailRepository
         return searchOrderDetail.Adapt<OrderDetailResponseDTO>();
     }
 
-    public Task<OrderDetailResponseDTO> UpdateOrderDetail(int id, UpdateOrderDetailDTO updateOrderDetailDTO)
+    public async Task<OrderDetailResponseDTO> UpdateOrderDetail(int id, UpdateOrderDetailDTO updateOrderDetailDTO)
     {
-        throw new NotImplementedException();
+        var updateOrderDetail = await _context.OrderDetails
+            .Include(x => x.Order)
+                .ThenInclude(x => x.User)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        updateOrderDetailDTO.Adapt(updateOrderDetail);
+        
+        _context.OrderDetails.Update(updateOrderDetail!);
+        await _context.SaveChangesAsync();
+
+        return updateOrderDetail.Adapt<OrderDetailResponseDTO>();
     }
 }

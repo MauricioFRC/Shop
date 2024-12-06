@@ -7,40 +7,49 @@ namespace Infrastructure.Services;
 
 public class OrderDetailService : IOrderDetailService
 {
-    private readonly IOrderDetailRepository _createOrderRepository;
+    private readonly IOrderDetailRepository _orderDetailRepository;
 
-    public OrderDetailService(IOrderDetailRepository createOrderRepository)
+    public OrderDetailService(IOrderDetailRepository orderDetailRepository)
     {
-        _createOrderRepository = createOrderRepository;
+        _orderDetailRepository = orderDetailRepository;
     }
 
     public async Task<OrderDetailResponseDTO> CreateOrderDetail(CreateOrderDetailRequest createOrderDetailRequest)
     {
-        var createOrder = await _createOrderRepository.CreateOrderDetail(createOrderDetailRequest)
+        var createOrder = await _orderDetailRepository.CreateOrderDetail(createOrderDetailRequest)
             ?? throw new NullReferenceException("No se pudo crear el order detail");
         return createOrder;
     }
 
-    public Task<OrderDetailResponseDTO> DeleteOrderDetail(int id)
+    public async Task<OrderDetailResponseDTO> DeleteOrderDetail(int id)
     {
-        throw new NotImplementedException();
+        ValidateId(id);
+        var deletedOrderDetail = await _orderDetailRepository
+            .DeleteOrderDetail(id)
+            ?? throw new NullReferenceException("No se pudo eliminar el usuario.");
+
+        return deletedOrderDetail;
     }
 
     public async Task<List<OrderDetailResponseDTO>> ListOrderDetails()
     {
-        // var orderDetailList = await _createOrderRepository.ListOrderDetails();
-        return await _createOrderRepository.ListOrderDetails();
+        return await _orderDetailRepository.ListOrderDetails();
     }
 
     public async Task<OrderDetailResponseDTO> SearchOrderDetail(int id)
     {
         ValidateId(id);
-        return await _createOrderRepository.SearchOrderDetail(id);
+        return await _orderDetailRepository.SearchOrderDetail(id);
     }
 
     public Task<OrderDetailResponseDTO> UpdateOrderDetail(int id, UpdateOrderDetailDTO updateOrderDetailDTO)
     {
-        throw new NotImplementedException();
+        ValidateId(id);
+        var updatedOrderDetail = _orderDetailRepository
+            .UpdateOrderDetail(id, updateOrderDetailDTO)
+            ?? throw new NullReferenceException("No se encontró al usuario.");
+
+        return updatedOrderDetail;
     }
 
     private static void ValidateId(int id)
