@@ -37,7 +37,7 @@ public class ProductController : BaseApiController
     }
 
     [HttpPost("create-product")]
-    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest, [FromRoute] string categories)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest)
     {
         var result = await _createProductValidation.ValidateAsync(createProductRequest);
         if (!result.IsValid)
@@ -47,7 +47,7 @@ public class ProductController : BaseApiController
                 e.ErrorMessage
             }));
 
-        return Ok(await _productService.CreateProduct(createProductRequest, categories));
+        return Ok(await _productService.CreateProduct(createProductRequest));
     }
 
     [HttpPut("update-product/{id}")]
@@ -68,5 +68,11 @@ public class ProductController : BaseApiController
     public async Task<IActionResult> DeleteProduct([FromRoute] int id)
     {
         return Ok(await _productService.DeleteProduct(id));
+    }
+
+    [HttpGet("product-qr-generator/{productId}")]
+    public async Task<IActionResult> ProductQrGenerator(int productId)
+    {
+        return File(await _productService.GenerateProductDescriptionQr(productId), "image/png");
     }
 }
