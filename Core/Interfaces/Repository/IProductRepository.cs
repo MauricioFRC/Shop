@@ -13,4 +13,5 @@ public interface IProductRepository
     public Task<ProductResponseDTO> DeleteProduct(int id);
     
     public Task<Category> GetCategories(string categoryName);
+    public Task<List<ProductResponseDTO>> GetProductsByRange(int range, CancellationToken cancellationToken);
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import ProductCard from './components/ProductCard';
 
 interface Product {
 	id: number;
@@ -42,6 +43,7 @@ function App() {
 		<div>
 			<h1 id="tableLabel">Products</h1>
 			{contents}
+			<ProductCard />
 		</div>
 	);
 

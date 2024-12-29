@@ -40,12 +40,7 @@ public class ProductController : BaseApiController
     public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest)
     {
         var result = await _createProductValidation.ValidateAsync(createProductRequest);
-        if (!result.IsValid)
-            return BadRequest(result.Errors.Select(e => new
-            {
-                e.PropertyName,
-                e.ErrorMessage
-            }));
+        if (!result.IsValid) return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
 
         return Ok(await _productService.CreateProduct(createProductRequest));
     }
@@ -54,12 +49,7 @@ public class ProductController : BaseApiController
     public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductDTO updateProductDTO)
     {
         var result = await _updateProductValidation.ValidateAsync(updateProductDTO);
-        if (!result.IsValid)
-            return BadRequest(result.Errors.Select(e => new
-            {
-                e.PropertyName,
-                e.ErrorMessage
-            }));
+        if (!result.IsValid) return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
 
         return Ok(await _productService.UpdateProduct(id, updateProductDTO));
     }
@@ -74,5 +64,12 @@ public class ProductController : BaseApiController
     public async Task<IActionResult> ProductQrGenerator(int productId)
     {
         return File(await _productService.GenerateProductDescriptionQr(productId), "image/png");
+    }
+
+    [HttpGet("product-pdf-report-generator/{maxRange}")]
+    public async Task<IActionResult> ProductPdfReportGenerator(int maxRange, CancellationToken cancellationToken, string fileName = "reporte_pdf")
+    {
+        var pdfReport = await _productService.GeneratePdfProductReport(maxRange, cancellationToken);
+        return File(pdfReport, "application/pdf", fileName + "_" + DateTime.UtcNow.ToShortDateString());
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Core.DTOs.Product;
-using Core.Entities;
 using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
 using Core.Request;
 using Mapster;
 using QRCoder;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System.Text;
 
 namespace Infrastructure.Services;
@@ -20,12 +22,6 @@ public class ProductService : IProductService
 
     public async Task<ProductResponseDTO> CreateProduct(CreateProductRequest createProductRequest)
     {
-        //var category = await _productRepository.GetCategories(categoryName) 
-            //?? throw new Exception("No se encontró la categoría");
-
-        //var product = category.Adapt<Product>();
-        //createProductRequest.CategoryId = category.Id;
-
         var createProduct = await _productRepository.CreateProduct(createProductRequest)
             ?? throw new ArgumentNullException("No se pudo crear el producto.");
 
@@ -82,6 +78,63 @@ public class ProductService : IProductService
 
         return qrCodeImage;
     }
+
+    public async Task<byte[]> GeneratePdfProductReport(int maxRange, CancellationToken cancellationToken)
+    {
+        QuestPDF.Settings.License = LicenseType.Community;
+
+        var products = await _productRepository.GetProductsByRange(maxRange, cancellationToken);
+
+        var document = Document.Create(c =>
+        {
+            c.Page(page =>
+            {
+                page.Margin(50);
+                page.Size(PageSizes.A4);
+                page.DefaultTextStyle(x => x.FontSize(12));
+
+                page.Header().Text("Reporte de Productos").SemiBold().FontSize(20).AlignCenter();
+                page.Content().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.RelativeColumn(1);
+                        columns.RelativeColumn(3);
+                        columns.RelativeColumn(2);
+                        columns.RelativeColumn(3);
+                        columns.RelativeColumn(1);
+                        columns.RelativeColumn(2);
+                    });
+
+                    table.Header(header =>
+                    {
+                        header.Cell().Text("Id").SemiBold();
+                        header.Cell().Text("Nombre").SemiBold();
+                        header.Cell().Text("Precio").SemiBold();
+                        header.Cell().Text("Descripción").SemiBold();
+                        header.Cell().Text("Stock").SemiBold();
+                        header.Cell().Text("Categoría").SemiBold();
+                    });
+
+                    foreach (var product in products)
+                    {
+                        table.Cell().Text(product.Id.ToString());
+                        table.Cell().Text(product.Name);
+                        table.Cell().Text(product.Price.ToString());
+                        table.Cell().Text(product.Description ?? "Sin descripción");
+                        table.Cell().Text(product.Stock.ToString());
+                        table.Cell().Text(product.Category ?? "Sin categoría");
+                    }
+                });
+
+                page.Footer().AlignCenter().Text($"Generado el {DateTime.Now:dd/MM/yyyy}");
+            });
+        });
+
+        using MemoryStream stream = new();
+        document.GeneratePdf(stream);
+        return stream.ToArray();
+    } 
 
     private static void ValidateId(int id) => ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id);
 }

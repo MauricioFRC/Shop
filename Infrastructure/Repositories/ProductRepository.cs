@@ -37,7 +37,9 @@ public class ProductRepository : IProductRepository
 
     public async Task<ProductResponseDTO> DeleteProduct(int id)
     {
-        var deletedProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        var deletedProduct = await _context.Products
+            .Include(x => x.Category)
+            .FirstOrDefaultAsync(x => x.Id == id);
         
         _context.Products.Remove(deletedProduct!);
         await _context.SaveChangesAsync();
@@ -47,19 +49,34 @@ public class ProductRepository : IProductRepository
 
     public async Task<List<ProductResponseDTO>> GetAllProducts()
     {
-        var products = await _context.Products.ToListAsync();
+        var products = await _context.Products
+            .Include(x => x.Category)
+            .ToListAsync();
         return products.Adapt<List<ProductResponseDTO>>();
+    }
+
+    public async Task<List<ProductResponseDTO>> GetProductsByRange(int range, CancellationToken cancellationToken)
+    {
+        var rangeProducts = await _context.Products
+            .Select(x => x).Take(range)
+            .Include(x => x.Category)
+            .ToListAsync(cancellationToken);
+        return rangeProducts.Adapt<List<ProductResponseDTO>>();
     }
 
     public async Task<ProductResponseDTO> GetProductById(int id)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        var product = await _context.Products
+            .Include(x => x.Category)
+            .FirstOrDefaultAsync(x => x.Id == id);
         return product.Adapt<ProductResponseDTO>();
     }
 
     public async Task<ProductResponseDTO> UpdateProduct(int id, UpdateProductDTO updateProductDTO)
     {
-        var updateProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+        var updateProduct = await _context.Products
+            .Include(x => x.Category)
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         updateProductDTO.Adapt(updateProduct);
         _context.Products.Update(updateProduct!);

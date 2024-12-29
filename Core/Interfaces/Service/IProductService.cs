@@ -13,7 +13,8 @@ public interface IProductService
     public Task<ProductResponseDTO> DeleteProduct(int id);
     #endregion
 
-    #region Image Generator
+    #region Product Report Generator
     public Task<byte[]> GenerateProductDescriptionQr(int productId);
+    public Task<byte[]> GeneratePdfProductReport(int maxRange, CancellationToken cancellationToken);
     #endregion
 }
