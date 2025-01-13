@@ -92,6 +92,7 @@ public static class DependencyInjection
         services.AddScoped<IValidator<UpdatePaymentDTO>, UpdatePaymentValidation>();
         services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
         services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidation>();
+        services.AddScoped<IValidator<CreateProductRequestImg>, CreateProductImgValidation>();
 
         return services;
     }

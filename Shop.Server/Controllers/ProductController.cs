@@ -13,11 +13,10 @@ public class ProductController : BaseApiController
     private readonly IValidator<CreateProductRequest> _createProductValidation;
     private readonly IValidator<UpdateProductDTO> _updateProductValidation;
 
-    public ProductController(
-        IProductService productService,
-        IValidator<CreateProductRequest> createProductValidation,
-        IValidator<UpdateProductDTO> updateProductValidation
-        )
+    public ProductController(IProductService productService, 
+        IValidator<CreateProductRequest> createProductValidation, 
+        IValidator<UpdateProductDTO> updateProductValidation, 
+        IValidator<CreateProductRequestImg> createProductRequestImgValidator)
     {
         _productService = productService;
         _createProductValidation = createProductValidation;
@@ -37,12 +36,24 @@ public class ProductController : BaseApiController
     }
 
     [HttpPost("create-product")]
-    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest)
+    public async Task<IActionResult> CreateProduct([FromBody] CreateProductRequest createProductRequest, IFormFile formFile)
     {
         var result = await _createProductValidation.ValidateAsync(createProductRequest);
         if (!result.IsValid) return BadRequest(result.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
 
         return Ok(await _productService.CreateProduct(createProductRequest));
+    }
+
+    [HttpPost("upload-product-image/{productId}")]
+    public async Task<IActionResult> UploadProductImage([FromRoute] int productId, IFormFile file, CancellationToken cancellationToken)
+    {
+        return Ok(await _productService.UploadProductImage(productId, file, cancellationToken));
+    }
+
+    [HttpGet("get-product-image/{productId}")]
+    public async Task<IActionResult> GetProductImage([FromRoute] int productId, CancellationToken cancellationToken)
+    {
+        return File(await _productService.GetProductImage(productId, cancellationToken), "image/png");
     }
 
     [HttpPut("update-product/{id}")]

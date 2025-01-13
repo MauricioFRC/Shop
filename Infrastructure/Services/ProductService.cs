@@ -3,6 +3,7 @@ using Core.Interfaces.Repository;
 using Core.Interfaces.Service;
 using Core.Request;
 using Mapster;
+using Microsoft.AspNetCore.Http;
 using QRCoder;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -26,6 +27,24 @@ public class ProductService : IProductService
             ?? throw new ArgumentNullException("No se pudo crear el producto.");
 
         return createProduct;
+    }
+
+    public async Task<ProductResponseDTO> UploadProductImage(int productId, IFormFile file, CancellationToken cancellationToken)
+    {
+        ValidateId(productId);
+        var uploadProductImage = await _productRepository.UploadProductImage(productId, file, cancellationToken)
+            ?? throw new ArgumentNullException("No se pudo subir la imagen del producto");
+
+        return uploadProductImage;
+    }
+
+    public async Task<byte[]> GetProductImage(int productId, CancellationToken cancellationToken)
+    {
+        ValidateId(productId);
+        var productImage = await _productRepository.GetProductImage(productId, cancellationToken)
+            ?? throw new ArgumentNullException($"No se encontró la imagen del producto con el Id: {productId}");
+
+        return productImage;
     }
 
     public async Task<ProductResponseDTO> DeleteProduct(int id)

@@ -16,6 +16,7 @@ public class ProductMapping : IRegister
             .Map(dest => dest.Description, src => src.ProductDescription)
             .Map(dest => dest.Stock, src => src.Stock)
             .Map(dest => dest.Category, src => src.Category.Name);
+            // .Map(dest => dest.HasImage = true, src => src.ProductImage != null);
 
         config.NewConfig<CreateProductRequest, Product>()
             .Map(dest => dest.Price, src => src.Price)
@@ -29,5 +30,12 @@ public class ProductMapping : IRegister
             .Map(dest => dest.ProductDescription, src => src.Description)
             .Map(dest => dest.Stock, src => src.Stock)
             .Map(dest => dest.Category, src => src.Category);
+
+        config.NewConfig<CreateProductRequestImg, Product>()
+            .Map(dest => dest.Price, src => src.Price)
+            .Map(dest => dest.ProductName, src => src.ProductName)
+            .Map(dest => dest.ProductDescription, src => src.ProductDescription)
+            .Map(dest => dest.Stock, src => src.Stock)
+            .Map(dest => dest.ProductImage, src => src.ProductImage);
     }
 }
