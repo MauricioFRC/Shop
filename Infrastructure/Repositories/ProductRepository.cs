@@ -52,6 +52,7 @@ public class ProductRepository : IProductRepository
     {
         var products = await _context.Products
             .Include(x => x.Category)
+            .OrderBy(x => x.Id)
             .ToListAsync();
         return products.Adapt<List<ProductResponseDTO>>();
     }
