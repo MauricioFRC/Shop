@@ -97,7 +97,7 @@ public class ProductRepository : IProductRepository
         using var stream = new MemoryStream();
         await file.CopyToAsync(stream, cancellationToken);
 
-        uploadProductImage!.ProductImage = stream.ToArray();
+        // uploadProductImage!.ProductImage = stream.ToArray();
 
         _context.Products.UpdateRange(uploadProductImage);
         await _context.SaveChangesAsync(cancellationToken);
@@ -105,11 +105,11 @@ public class ProductRepository : IProductRepository
         return uploadProductImage.Adapt<ProductResponseDTO>();
     }
 
-    public async Task<byte[]> GetProductImage(int productId, CancellationToken cancellationToken)
-    {
-        var productImage = await _context.Products
-            .FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
+    //public async Task<byte[]> GetProductImage(int productId, CancellationToken cancellationToken)
+    //{
+    //    var productImage = await _context.Products
+    //        .FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
 
-        return productImage!.ProductImage;
-    }
+    //    //return productImage!.ProductImage;
+    //}
 }

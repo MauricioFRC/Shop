@@ -8,11 +8,9 @@ export default function Products() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Obtener productos
         const productsResponse = await fetch("http://localhost:5022/api/products");
         const productsData = await productsResponse.json();
 
-        // Obtener imágenes para cada producto
         const productsWithImages = await Promise.all(
           productsData.map(async (product) => {
             const imagesResponse = await fetch(`http://localhost:5022/api/get-product-image?id=${product.id}`);

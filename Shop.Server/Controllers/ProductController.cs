@@ -2,7 +2,6 @@
 using Core.Interfaces.Service;
 using Core.Request;
 using FluentValidation;
-using Infrastructure.Validations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Shop.Server.Controllers;
@@ -44,18 +43,18 @@ public class ProductController : BaseApiController
         return Ok(await _productService.CreateProduct(createProductRequest));
     }
 
-    [HttpPost("upload-product-image/{productId}")]
-    public async Task<IActionResult> UploadProductImage([FromRoute] int productId, IFormFile file, CancellationToken cancellationToken)
-    {
-        return Ok(await _productService.UploadProductImage(productId, file, cancellationToken));
-    }
+    //[HttpPost("upload-product-image/{productId}")]
+    //public async Task<IActionResult> UploadProductImage(CreateProductImageRequest createProductImageRequest, CancellationToken cancellationToken)
+    //{
+    //    return Ok(await _productService.UploadProductImage(productId, file, cancellationToken));
+    //}
 
-    [HttpGet("get-product-image/{productId}")]
-    public async Task<IActionResult> GetProductImage([FromRoute] int productId, CancellationToken cancellationToken)
-    {
-        return File(await _productService.GetProductImage(productId, cancellationToken), "image/png");
-    }
-
+    //[HttpGet("get-product-image/{productId}")]
+    //public async Task<IActionResult> GetProductImage([FromRoute] int productId, CancellationToken cancellationToken)
+    //{
+    //    return File(await _productService.GetProductImage(productId, cancellationToken), "image/png");
+    //}
+    
     [HttpPut("update-product/{id}")]
     public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] UpdateProductDTO updateProductDTO)
     {

@@ -11,6 +11,7 @@ public class AplicationDbContext : DbContext
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<User> Users { get; set; }
 
     public AplicationDbContext(DbContextOptions<AplicationDbContext> options) : base(options) {}
@@ -23,5 +24,6 @@ public class AplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PaymentConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
     }
 }

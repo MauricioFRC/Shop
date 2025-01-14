@@ -16,6 +16,7 @@ using Infrastructure.Validations.Order;
 using Infrastructure.Validations.OrderDetail;
 using Infrastructure.Validations.Payment;
 using Infrastructure.Validations.Product;
+using Infrastructure.Validations.Product.ProductImage;
 using Infrastructure.Validations.User;
 using Mapster;
 using MapsterMapper;
@@ -62,6 +63,7 @@ public static class DependencyInjection
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRespository, UserRepository>();
+        services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
         return services;
     }
@@ -74,6 +76,7 @@ public static class DependencyInjection
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProductImageService, ProductImageService>();
 
         return services;
     }
@@ -93,6 +96,7 @@ public static class DependencyInjection
         services.AddScoped<IValidator<UpdateProductDTO>, UpdateProductValidation>();
         services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidation>();
         services.AddScoped<IValidator<CreateProductRequestImg>, CreateProductImgValidation>();
+        services.AddScoped<IValidator<CreateProductImageRequest>, CreateProductImageValidation>();
 
         return services;
     }

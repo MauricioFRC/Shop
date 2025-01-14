@@ -29,23 +29,23 @@ public class ProductService : IProductService
         return createProduct;
     }
 
-    public async Task<ProductResponseDTO> UploadProductImage(int productId, IFormFile file, CancellationToken cancellationToken)
-    {
-        ValidateId(productId);
-        var uploadProductImage = await _productRepository.UploadProductImage(productId, file, cancellationToken)
-            ?? throw new ArgumentNullException("No se pudo subir la imagen del producto");
+    //public async Task<ProductResponseDTO> UploadProductImage(int productId, IFormFile file, CancellationToken cancellationToken)
+    //{
+    //    ValidateId(productId);
+    //    var uploadProductImage = await _productRepository.UploadProductImage(productId, file, cancellationToken)
+    //        ?? throw new ArgumentNullException("No se pudo subir la imagen del producto");
 
-        return uploadProductImage;
-    }
+    //    return uploadProductImage;
+    //}
 
-    public async Task<byte[]> GetProductImage(int productId, CancellationToken cancellationToken)
-    {
-        ValidateId(productId);
-        var productImage = await _productRepository.GetProductImage(productId, cancellationToken)
-            ?? throw new ArgumentNullException($"No se encontró la imagen del producto con el Id: {productId}");
+    //public async Task<byte[]> GetProductImage(int productId, CancellationToken cancellationToken)
+    //{
+    //    ValidateId(productId);
+    //    var productImage = await _productRepository.GetProductImage(productId, cancellationToken)
+    //        ?? throw new ArgumentNullException($"No se encontró la imagen del producto con el Id: {productId}");
 
-        return productImage;
-    }
+    //    return productImage;
+    //}
 
     public async Task<ProductResponseDTO> DeleteProduct(int id)
     {
