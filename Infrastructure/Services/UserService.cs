@@ -15,21 +15,21 @@ public class UserService : IUserService
         _userRespository = userRespository;
     }
 
-    public async Task<UserResponseDTO> CreateUser(CreateUserRequest createUserRequest)
+    public async Task<UserResponseDTO> CreateUser(CreateUserRequest createUserRequest, CancellationToken cancellationToken)
     {
-        var createdUser = await _userRespository.CreateUser(createUserRequest) 
+        var createdUser = await _userRespository.CreateUser(createUserRequest, cancellationToken) 
             ?? throw new InvalidOperationException("No se pudo crear el usuario.");
 
-        return createdUser.Adapt<UserResponseDTO>();
+        return createdUser;
     }
 
-    public async Task<UserResponseDTO> DeleteUser(int id)
+    public async Task<UserResponseDTO> DeleteUser(int id, CancellationToken cancellationToken)
     {
         ValidateId(id);
-        var deletedUser = await _userRespository.DeleteUser(id)
+        var deletedUser = await _userRespository.DeleteUser(id, cancellationToken)
             ?? throw new InvalidOperationException("No se encontró el usuario.");
 
-        return deletedUser.Adapt<UserResponseDTO>();
+        return deletedUser;
     }
 
     public async Task<List<UserResponseDTO>> ListUsers()
@@ -39,25 +39,34 @@ public class UserService : IUserService
         if (listUsers == null || listUsers.Count == 0)
             throw new InvalidOperationException("La lista no contiene ningun usuario.");
 
-        return listUsers.Adapt<List<UserResponseDTO>>();
+        return listUsers;
     }
 
-    public async Task<UserResponseDTO> SearchUser(int id)
+    public async Task<UserResponseDTO> SearchUser(int id, CancellationToken cancellationToken)
     {
         ValidateId(id);
-        var searchUser = await _userRespository.SearchUser(id)
+        var searchUser = await _userRespository.SearchUser(id, cancellationToken)
             ?? throw new InvalidOperationException("No se encontró el usuario.");
 
-        return searchUser.Adapt<UserResponseDTO>();
+        return searchUser;
     }
 
-    public async Task<UserResponseDTO> UpdateUser(int id, UserUpdateDTO userUpdateDTO)
+    public async Task<UserResponseDTO> UpdateUser(int id, UserUpdateDTO userUpdateDTO, CancellationToken cancellationToken)
     {
         ValidateId(id);
-        var updatedUser = await _userRespository.UpdateUser(id, userUpdateDTO)
+        var updatedUser = await _userRespository.UpdateUser(id, userUpdateDTO, cancellationToken)
             ?? throw new InvalidOperationException("No se encontró el usuario.");
 
-        return updatedUser.Adapt<UserResponseDTO>();
+        return updatedUser;
+    }
+
+    public async Task<UserResponseDTO> UpdateUserRole(int id, UpdateUserRoleDto roleUpdateDTO, CancellationToken cancellationToken)
+    {
+        ValidateId(id);
+        var updateUserRole = await _userRespository.UpdateUserRole(id, roleUpdateDTO, cancellationToken)
+            ?? throw new ArgumentNullException($"No se encontró el usuario con el Id: {id}");
+
+        return updateUserRole;
     }
 
     private static void ValidateId(int id)

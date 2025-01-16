@@ -30,7 +30,7 @@ app.UseCors(builder =>
            .AllowAnyMethod()
            .AllowAnyHeader());
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+// app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 

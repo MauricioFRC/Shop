@@ -97,6 +97,7 @@ public static class DependencyInjection
         services.AddScoped<IValidator<UserUpdateDTO>, UserUpdateValidation>();
         services.AddScoped<IValidator<CreateProductRequestImg>, CreateProductImgValidation>();
         services.AddScoped<IValidator<CreateProductImageRequest>, CreateProductImageValidation>();
+        services.AddScoped<IValidator<UpdateUserRoleDto>, UpdateUserRoleValidation>();
 
         return services;
     }

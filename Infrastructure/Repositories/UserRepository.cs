@@ -17,22 +17,22 @@ public class UserRepository : IUserRespository
         _context = context;
     }
 
-    public async Task<UserResponseDTO> CreateUser(CreateUserRequest createUserRequest)
+    public async Task<UserResponseDTO> CreateUser(CreateUserRequest createUserRequest, CancellationToken cancellationToken)
     {
         var createdUser = createUserRequest.Adapt<User>();
 
         _context.Users.Add(createdUser);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return createdUser.Adapt<UserResponseDTO>();
     }
 
-    public async Task<UserResponseDTO> DeleteUser(int id)
+    public async Task<UserResponseDTO> DeleteUser(int id, CancellationToken cancellationToken)
     {
-        var deletedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        var deletedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 
-        _context.Users.Remove(deletedUser);
-        await _context.SaveChangesAsync();
+        _context.Users.Remove(deletedUser!);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return deletedUser.Adapt<UserResponseDTO>();
     }
@@ -43,21 +43,33 @@ public class UserRepository : IUserRespository
         return users.Adapt<List<UserResponseDTO>>();
     }
 
-    public async Task<UserResponseDTO> SearchUser(int id)
+    public async Task<UserResponseDTO> SearchUser(int id, CancellationToken cancellationToken)
     {
-        var searchUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var searchUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         return searchUser.Adapt<UserResponseDTO>();
     }
 
-    public async Task<UserResponseDTO> UpdateUser(int id, UserUpdateDTO userUpdateDTO)
+    public async Task<UserResponseDTO> UpdateUser(int id, UserUpdateDTO userUpdateDTO, CancellationToken cancellationToken)
     {
-        var searchUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var searchUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         userUpdateDTO.Adapt(searchUser);
 
-        _context.Users.Update(searchUser);
-        await _context.SaveChangesAsync();
+        _context.Users.Update(searchUser!);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return searchUser.Adapt<UserResponseDTO>();
+    }
+
+    public async Task<UserResponseDTO> UpdateUserRole(int id, UpdateUserRoleDto userRoleDTO, CancellationToken cancellationToken)
+    {
+        var searchUsertoUpdate = await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        userRoleDTO.Adapt(searchUsertoUpdate);
+
+        _context.Users.Update(searchUsertoUpdate!);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return searchUsertoUpdate.Adapt<UserResponseDTO>();
     }
 }
