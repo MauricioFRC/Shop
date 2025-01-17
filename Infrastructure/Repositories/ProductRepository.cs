@@ -87,29 +87,4 @@ public class ProductRepository : IProductRepository
 
         return updateProduct.Adapt<ProductResponseDTO>();
     }
-
-    public async Task<ProductResponseDTO> UploadProductImage(int productId, IFormFile file, CancellationToken cancellationToken)
-    {
-        var uploadProductImage = await _context.Products
-            .Include(x => x.Category)
-            .FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
-
-        using var stream = new MemoryStream();
-        await file.CopyToAsync(stream, cancellationToken);
-
-        // uploadProductImage!.ProductImage = stream.ToArray();
-
-        _context.Products.UpdateRange(uploadProductImage);
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return uploadProductImage.Adapt<ProductResponseDTO>();
-    }
-
-    //public async Task<byte[]> GetProductImage(int productId, CancellationToken cancellationToken)
-    //{
-    //    var productImage = await _context.Products
-    //        .FirstOrDefaultAsync(x => x.Id == productId, cancellationToken);
-
-    //    //return productImage!.ProductImage;
-    //}
 }

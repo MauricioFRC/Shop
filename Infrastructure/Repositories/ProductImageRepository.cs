@@ -50,4 +50,22 @@ public class ProductImageRepository : IProductImageRepository
 
         return uploadProductImage.Adapt<ProductImageResponseDTO>();
     }
+
+    public async Task<ProductImageResponseDTO> DeleteProductImage(int id, CancellationToken cancellationToken)
+    {
+        var deletedImage = await _context.ProductImages
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        _context.ProductImages.Remove(deletedImage!);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return deletedImage.Adapt<ProductImageResponseDTO>();
+    }
+
+    public async Task<List<ProductImageResponseDTO>> GetAllImagesId()
+    {
+        var imagesIds = await _context.ProductImages.ToListAsync();
+
+        return imagesIds.Adapt<List<ProductImageResponseDTO>>();
+    }
 }

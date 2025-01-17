@@ -35,4 +35,16 @@ public class ProductImageController : BaseApiController
     {
         return File(await _productImageService.GetProductImage(productId, cancellationToken), "image/png");
     }
+
+    [HttpDelete("delete-product-image/{imageId}")]
+    public async Task<IActionResult> DeleteProductImage([FromRoute] int imageId, CancellationToken cancellationToken)
+    {
+        return Ok(await _productImageService.DeleteProductImage(imageId, cancellationToken));
+    }
+
+    [HttpGet("get-all-products-images-ids")]
+    public async Task<IActionResult> GetAllImagesIds()
+    {
+        return Ok(await _productImageService.GetAllImagesId());
+    }
 }

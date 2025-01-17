@@ -39,6 +39,23 @@ public class ProductImageService : IProductImageService
         return uploadProductImage;
     }
 
+    public async Task<ProductImageResponseDTO> DeleteProductImage(int id, CancellationToken cancellationToken)
+    {
+        ValidateId(id);
+        var deletedImage = await _productImageRepository.DeleteProductImage(id, cancellationToken)
+            ?? throw new ArgumentNullException($"No se encontró la imagen con el id {id}");
+
+        return deletedImage;
+    }
+
+    public async Task<List<ProductImageResponseDTO>> GetAllImagesId()
+    {
+        var imagesIds = await _productImageRepository.GetAllImagesId()
+            ?? throw new ArgumentNullException("No se encontraron imagenes");
+
+        return imagesIds;
+    }
+
     private void ValidateId(int id)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id);
