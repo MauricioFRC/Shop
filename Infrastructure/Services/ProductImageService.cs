@@ -56,7 +56,7 @@ public class ProductImageService : IProductImageService
         return imagesIds;
     }
 
-    private void ValidateId(int id)
+    private static void ValidateId(int id)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(id);
     }

@@ -13,6 +13,7 @@ public class AplicationDbContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
 
     public AplicationDbContext(DbContextOptions<AplicationDbContext> options) : base(options) {}
 
@@ -25,5 +26,6 @@ public class AplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+        modelBuilder.ApplyConfiguration(new TicketConfiguration());
     }
 }

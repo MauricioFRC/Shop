@@ -17,6 +17,7 @@ using Infrastructure.Validations.OrderDetail;
 using Infrastructure.Validations.Payment;
 using Infrastructure.Validations.Product;
 using Infrastructure.Validations.Product.ProductImage;
+using Infrastructure.Validations.Ticket;
 using Infrastructure.Validations.User;
 using Mapster;
 using MapsterMapper;
@@ -64,6 +65,7 @@ public static class DependencyInjection
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRespository, UserRepository>();
         services.AddScoped<IProductImageRepository, ProductImageRepository>();
+        services.AddScoped<ITicketRepository, TicketRepository>();
 
         return services;
     }
@@ -77,6 +79,7 @@ public static class DependencyInjection
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProductImageService, ProductImageService>();
+        services.AddScoped<ITicketService, TicketService>();
 
         return services;
     }
@@ -98,6 +101,7 @@ public static class DependencyInjection
         services.AddScoped<IValidator<CreateProductRequestImg>, CreateProductImgValidation>();
         services.AddScoped<IValidator<CreateProductImageRequest>, CreateProductImageValidation>();
         services.AddScoped<IValidator<UpdateUserRoleDto>, UpdateUserRoleValidation>();
+        services.AddScoped<IValidator<CreateTicketRequest>, CreateTicketValidation>();
 
         return services;
     }

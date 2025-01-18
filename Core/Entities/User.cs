@@ -9,4 +9,5 @@ public class User
     public string Role { get; set; } = "Customer";
 
     public List<Order> Orders { get; set; } = [];
+    public List<Ticket> Tickets { get; set; } = [];
 }

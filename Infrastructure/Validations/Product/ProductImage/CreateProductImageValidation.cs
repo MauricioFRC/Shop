@@ -1,6 +1,5 @@
 ﻿using Core.Request;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Validations.Product.ProductImage;
 

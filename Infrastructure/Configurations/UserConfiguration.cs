@@ -22,5 +22,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         entity.HasMany(u => u.Orders)
               .WithOne(u => u.User)
               .HasForeignKey(u => u.UserId);
+
+        entity.HasMany(x => x.Tickets)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
     }
 }
