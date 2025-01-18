@@ -19,6 +19,8 @@ public class TicketService : ITicketService
         var createdTicket = await _tickerRepository.CreateTicket(createTicketRequest, cancellationToken)
             ?? throw new ArgumentNullException("No se pudo crear el ticket");
 
+        if (string.IsNullOrEmpty(createdTicket.UserName)) throw new ArgumentNullException("Un usuario que no existe no puede crear un ticket");
+
         return createdTicket;
     }
 

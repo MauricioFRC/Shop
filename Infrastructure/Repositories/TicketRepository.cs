@@ -21,6 +21,8 @@ public class TicketRepository : ITicketRepository
     {
         var createdTicket = createTicketRequest.Adapt<Ticket>();
 
+        await CheckIfExist(createdTicket.UserId);
+
         await _context.Tickets.AddAsync(createdTicket, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
@@ -48,5 +50,14 @@ public class TicketRepository : ITicketRepository
             .ToListAsync(cancellationToken);
 
         return getTicketByPriority.Adapt<List<TicketResponseDto>>();
+    }
+
+    public async Task<User> CheckIfExist(int id)
+    {
+        var check = await _context.Users
+            .FirstOrDefaultAsync(x => x.Id == id)
+            ?? throw new ArgumentNullException($"No se encontró el usuario con el Id: {id}");
+
+        return check;
     }
 }
